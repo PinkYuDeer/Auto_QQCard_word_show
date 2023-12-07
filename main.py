@@ -1,3 +1,4 @@
+import sys
 import tkinter as tk
 from PIL import Image, ImageTk
 import requests
@@ -100,9 +101,15 @@ class MyTk(tk.Tk):
         xOffset = (514 / 2) - ((coords[2] - coords[0]) / 2)
         return xOffset
 
+    @staticmethod
+    def get_resource_path(relative_path):
+        if hasattr(sys, '_MEIPASS'):
+            return os.path.join(sys._MEIPASS, relative_path)
+        return os.path.join(os.path.abspath("."), relative_path)
+
     def display_card_info(self, card):
         global bg_image, word_image
-        bg_image = Image.open("img.png")  # 背景图片路径
+        bg_image = Image.open(self.get_resource_path("img/img.png"))  # 背景图片路径
         bg_image = bg_image.resize((514, 393))  # 调整背景图片大小
         bg_image = ImageTk.PhotoImage(bg_image)
         self.card.create_image(0, 0, anchor=tk.NW, image=bg_image)
